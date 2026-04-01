@@ -28,6 +28,10 @@ the more work you can put in now, the better.
 
 ## Assignment Checklist
 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 To be sure you have completed everything on this assignment, we have littered
 this document with TODO comments. You can browse all of them in VSCode by
 opening the TODOs window from the sidebar. The icon looks like a tree and will
@@ -49,6 +53,10 @@ to the tree diagram (you may remove this one as well):
 
 ## Assignment Learning Objectives
 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 Without learning objectives, there really is no clear reason why a particular
 assessment or activity exists. Therefore, to be completely transparent, here is
 what we're hoping you will learn through this particular aspect of the portfolio
@@ -62,6 +70,10 @@ project. Specifically, students should be able to:
 
 ## Assignment Rubric: 10 Points
 
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 Again, to be completely transparent, most of the portfolio project, except the
 final submission, is designed as a formative assessment. Formative assessments
 are meant to provide ongoing feedback in the learning process. Therefore,
@@ -106,7 +118,11 @@ Below is further rationale/explanation for the rubric items above:
 > to create a new design. In you do end up picking one at random, you should
 > disclose that here as well.
 
+<<<<<<< Updated upstream
 I am choosing to do the pitcher simulation because it is a seed of an idea for a future major project. The pitcher component is also a good representation of how you can build a component that can be used by multiple different components. I foresee myself using it for a simulation scenario, but also I can see it being used for baseball video games or used by baseball teams to scout out opposing pitchers. Also, my other component ideas mainly involve getter methods, which isn't showing off a complete breadth of my understanding.
+=======
+I will be designing and implementing the Pitcher component because this is the topic I am most interested about, and it is the most productive to my overall goal of creating a full baseball game simulation. There are also many interesting ways to implement secondary methods using its potential kernel methods.
+>>>>>>> Stashed changes
 
 > Once you've argued your choice of design, make a branch in your new repo called
 > something like `proof-of-concept`. There are many ways to do this, but my
@@ -142,8 +158,6 @@ completed the assignment.
 
 ### Changelog
 
-<!-- TODO: update CHANGELOG then delete this comment -->
-
 At the end of every assignment, you should update the
 [CHANGELOG.md](../../CHANGELOG.md) file found in the root of the project folder.
 Here's what I would expect to see at the minimum:
@@ -177,8 +191,6 @@ request merge (or at least tag your commits). This is not required.
 
 ### Submission
 
-<!-- TODO: read the submission instructions then delete this comment -->
-
 Assuming that your project is in a GitHub repo somewhere and your changes are on
 a proof-of-concept branch, then what we'll want you to do is create a pull
 request of all your changes. Pull requests are pretty easy to make if you're
@@ -200,7 +212,6 @@ to look over your changes. Otherwise, you defer needed changes to later pull
 requests, which could sacrifice the overall quality of your work or result in
 major rework.
 
-<!-- TODO: paste the URL to Carmen then delete this comment -->
 
 ### Peer Review
 
@@ -230,8 +241,6 @@ table).
 If you'd like to give feedback for this assignment (or any assignment, really),
 make use of [this survey][survey]. Your feedback helps make assignments
 better for future students.
-
-<!-- TODO: follow the link to share your feedback then delete this comment -->
 
 [pottery-fails]: https://www.youtube.com/shorts/Kqb9l113F_0?feature=share
 [survey]: https://forms.gle/dumXHo6A4Enucdkq9
