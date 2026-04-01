@@ -28,6 +28,18 @@ public class Pitcher1L {
     private Map<String, Double> stats;
 
     /**
+     * Pitch type usage percentages keyed by pitch type abbreviation. e.g. "FF"
+     * -> 0.45
+     */
+    private Map<String, Double> pitchMix;
+
+    /**
+     * Average pitch location by pitch type. Keys are "PITCHTYPE_x" and
+     * "PITCHTYPE_z". e.g. "FF_x" -> -0.12, "FF_z" -> 2.45
+     */
+    private Map<String, Double> pitchLocations;
+
+    /**
      * Stores level of stamina player is at in game.
      */
     private int stamina;
@@ -35,7 +47,7 @@ public class Pitcher1L {
     /**
      * Automatic starting stamina for all new pitchers.
      */
-    private final int START_STAMINA = 100;
+    private static final int START_STAMINA = 100;
 
     /**
      * Constructor for a Pitcher.
@@ -66,6 +78,71 @@ public class Pitcher1L {
     public void setStats(int id, int y) {
         DataFetcher fetcher = new DataFetcher();
         this.stats = fetcher.fetchAllStats(id, y);
+        this.pitchMix = fetcher.fetchPitchMix(id, y);
+        this.pitchLocations = fetcher.fetchPitchLocations(id, y);
+    }
+
+    /**
+     * Returns name.
+     *
+     * @return name
+     */
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Returns ID number.
+     *
+     * @return idNum
+     */
+    public int getIdNum() {
+        return this.idNum;
+    }
+
+    /**
+     * Returns year.
+     *
+     * @return year
+     */
+    public int getYear() {
+        return this.year;
+    }
+
+    /**
+     * Returns stamina.
+     *
+     * @return stamina
+     */
+    public int getStamina() {
+        return this.stamina;
+    }
+
+    /**
+     * Returns Stats.
+     *
+     * @return stats
+     */
+    public Map<String, Double> getStats() {
+        return this.stats;
+    }
+
+    /**
+     * Returns Pitch Mix.
+     *
+     * @return pitchMix
+     */
+    public Map<String, Double> getPitchMix() {
+        return this.pitchMix;
+    }
+
+    /**
+     * Returns pitch locations.
+     *
+     * @return pitchLocations
+     */
+    public Map<String, Double> getPitchLocs() {
+        return this.pitchLocations;
     }
 
     /**
@@ -75,6 +152,7 @@ public class Pitcher1L {
      */
     public static void main(String[] args) {
         Pitcher1L testPitcher = new Pitcher1L("Shohei", "Ohtani", 660271, 2022);
-        System.out.print(testPitcher.stats.toString());
+        System.out.println(testPitcher.pitchLocations.toString());
+        System.out.println(testPitcher.pitchMix.toString());
     }
 }
