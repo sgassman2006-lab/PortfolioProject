@@ -1,0 +1,121 @@
+package components.pitcher;
+
+/**
+ * Layered implementation of secondary methods for {@code Pitcher}
+ */
+public abstract class PitcherSecondary implements Pitcher {
+
+    /**
+     * Calculates pitch type based on average tendencies of pitcher.
+     */
+    public String decidePitchType() {
+        double roll = Math.random();
+        double cumulative = 0.0;
+        String key = "FF";
+
+        Map<String, Double> pitchMix = this.getPitchMix();
+        for (Map.Pair<String, Double> entry : pitchMix) {
+            cumulative += entry.value();
+            if (roll < cumulative) {
+                key = entry.key();
+            }
+        }
+
+        return key;
+    }
+
+    /**
+     * Calculates pitch location as [x, z] based on average tendencies
+     * of pitcher in season stats, based on selected pitch type.
+     */
+    public double[] pitchSpot() {
+        String pitchType = this.decidePitchType();
+
+        double avgX = 0.0;
+        double avgZ = 0.0;
+
+        Map<String, Double> pitchLocs = this.getPitchLocs();
+        if (this.pitchLocations.hasKey(pitchType + "_x")) {
+            avgX = pitchLocs.value(pitchType + "_x");
+            avgX = avgX /0.835; //Updates to 2 by 2
+        }
+
+        if (this.pitchLocations.hasKey(pitchType + "_z")) {
+            avgZ = pitchLocs.value(pitchType + "_z");
+            avgZ = avgZ - 2.5; //Updates to 2 by 2
+        }
+
+        // To make inconsistent
+        double variance = 0.15;
+        double x = avgX + (Math.random() * 2 - 1) * variance;
+        double z = avgZ + (Math.random() * 2 - 1) * variance;
+
+        // Restricts to [-1.5, 1.5]
+        x = Math.max(-1.5, Math.min(1.5, x));
+        z = Math.max(-1.5, Math.min(1.5, z));
+
+        return new double[] { x, z };
+    }
+
+    /**
+     * Adjusts velocity based on stamina.
+     */
+    public double velocityAdjustmentFactor() {
+        // Only allows for a 5mph dropoff when reaching max exhaustion
+        return 1.0 - (0.5 * (1.0 - (this.getStamina() / 100.0)));
+    }
+
+    /**
+     * Calculates live game WHIP for pitcher to see if he is doing poorly.
+     */
+    public double calculateWHIP() {
+        // THESE ARE THE CURRENT VALUES, BUT IMAGINE
+        // THAT THERE IS A STORAGE FOR CURRENT GAME STATS
+        // THAT IT PULLS FROM INSTEAD
+        double walks = this.getStats().value("baseOnBalls");
+        double hits = this.getStats().value("hits");
+        double inningsPitched = this.getStats().value("inningsPitched");
+
+        double whip = 0.0
+        if(inningsPitched != 0.0) {
+            whip = (walks + hits) / inningsPitched;
+        }
+
+        return whip;
+    }
+
+    /**
+     * Indicates that the pitcher is tired.
+     */
+    public boolean isTired() {
+        boolean tired = false;
+        if(this.getStamina() <= 20) {
+            tired = true;
+        }
+        return tired;
+    }
+
+    /**
+     * Changes randomness, stamina when in tense situation,
+     * reflecting energy change when most important
+     */
+    public void tenseSituation(double leverageIndex) {
+        // Can't be completed until the in game tracker is complete
+    }
+
+    /**
+     * Resets simulation effects of deteriorated pitcher for restart
+     */
+    public void resetOutingState() {
+        // Many functions will be better when the in game tracker is complete
+        this.setStamina(START_STAMINA);
+    }
+
+    /**
+     * Details metrics and stats of outing
+     */
+    public String printSummary() {
+        // Will be possible when in game tracker is complete
+    }
+
+}
