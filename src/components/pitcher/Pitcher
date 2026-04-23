@@ -46,13 +46,6 @@ public interface Pitcher extends PitcherKernel {
     void tenseSituation(double leverageIndex);
 
     /**
-     * Returns the estimated maximum velocity pitcher can sustain for the
-     * remainder of the outing, based on stamina and recorded average
-     * fastball velocity.
-     */
-    double peakRemainingVelocity();
-
-    /**
      * Resets pitcher's in-game state without altering the stored season statistics
      * or identity fields.
      */
