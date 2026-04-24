@@ -5,7 +5,7 @@ import components.map.Map;
 /**
  * Kernel Class of Pitcher Simulator which implements all kernel methods.
  */
-public class Pitcher1L {
+public class Pitcher1 extends PitcherSecondary {
 
     /**
      * Full Name of Player with correct Capitalization.
@@ -57,14 +57,14 @@ public class Pitcher1L {
      * @param id
      * @param y
      */
-    public Pitcher1L(String first, String last, int id, int y) {
+    public Pitcher1(String first, String last, int id, int y) {
         this.name = first.substring(0, 1).toUpperCase()
                 + first.substring(1).toLowerCase() + " "
                 + last.substring(0, 1).toUpperCase()
                 + last.substring(1).toLowerCase();
         this.idNum = id;
         this.year = y;
-        this.stamina = this.START_STAMINA;
+        this.stamina = Pitcher1.START_STAMINA;
 
         this.setStats(id, y);
     }
@@ -75,11 +75,11 @@ public class Pitcher1L {
      * @param id
      * @param y
      */
+    @Override
     public void setStats(int id, int y) {
-        DataFetcher fetcher = new DataFetcher();
-        this.stats = fetcher.fetchAllStats(id, y);
-        this.pitchMix = fetcher.fetchPitchMix(id, y);
-        this.pitchLocations = fetcher.fetchPitchLocations(id, y);
+        this.stats = DataFetcher.fetchAllStats(id, y);
+        this.pitchMix = DataFetcher.fetchPitchMix(id, y);
+        this.pitchLocations = DataFetcher.fetchPitchLocations(id, y);
     }
 
     /**
@@ -87,6 +87,7 @@ public class Pitcher1L {
      *
      * @return name
      */
+    @Override
     public String getName() {
         return this.name;
     }
@@ -96,7 +97,8 @@ public class Pitcher1L {
      *
      * @return idNum
      */
-    public int getIdNum() {
+    @Override
+    public int getID() {
         return this.idNum;
     }
 
@@ -105,6 +107,7 @@ public class Pitcher1L {
      *
      * @return year
      */
+    @Override
     public int getYear() {
         return this.year;
     }
@@ -114,6 +117,7 @@ public class Pitcher1L {
      *
      * @return stamina
      */
+    @Override
     public int getStamina() {
         return this.stamina;
     }
@@ -132,6 +136,7 @@ public class Pitcher1L {
      *
      * @return pitchMix
      */
+    @Override
     public Map<String, Double> getPitchMix() {
         return this.pitchMix;
     }
@@ -141,6 +146,7 @@ public class Pitcher1L {
      *
      * @return pitchLocations
      */
+    @Override
     public Map<String, Double> getPitchLocs() {
         return this.pitchLocations;
     }
@@ -151,8 +157,9 @@ public class Pitcher1L {
      * @param args
      */
     public static void main(String[] args) {
-        Pitcher1L testPitcher = new Pitcher1L("Shohei", "Ohtani", 660271, 2022);
+        Pitcher1 testPitcher = new Pitcher1("Shohei", "Ohtani", 660271, 2022);
         System.out.println(testPitcher.pitchLocations.toString());
         System.out.println(testPitcher.pitchMix.toString());
+        System.out.println(testPitcher.stats.toString());
     }
 }

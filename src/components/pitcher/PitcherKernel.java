@@ -1,71 +1,126 @@
 package components.pitcher;
 
 import components.map.Map;
+import components.standard.Standard;
 
 /**
- * Kernel Class of Pitcher Simulator which implements all kernel methods.
+ * Pitcher kernel component with primary methods.
+ *
+ * @author Samuel Gassman
+ *
  */
-public class PitcherKernel {
+public interface PitcherKernel extends Standard<Pitcher> {
 
     /**
-     * Full Name of Player with correct Capitalization.
+     * Initial stamina for any pitcher, maximum value.
      */
-    private static String name;
+    int START_STAMINA = 100;
 
     /**
-     * Year of season for the Player.
+     * Stamina threshold for when a pitcher is considered tired.
      */
-    private static int year;
+    int TIRED_THRESHOLD = 20;
 
     /**
-     * Map to hold the key data of the player for the season.
-     */
-    private static Map<String, Double> stats;
-
-    /**
-     * Stores level of stamina player is at in game.
-     */
-    private static int stamina;
-
-    /**
-     * Automatic starting stamina for all new pitchers.
-     */
-    private final int startStamina = 100;
-
-    /**
-     * Constructor for a Pitcher.
+     * Loads pitcher's season stats from data using given player ID and season
+     * year, and replaces any previously stored statistics for pitcher.
      *
-     * @param firstName
-     * @param lastName
+     * @param id
      * @param y
+     *
+     * @replaces this.stats
      */
-    public PitcherKernel(String firstName, String lastName, int y) {
-        name = firstName.substring(0, 1).toUpperCase()
-                + firstName.substring(1).toLowerCase() + " "
-                + lastName.substring(0, 1).toUpperCase()
-                + lastName.substring(1).toLowerCase();
-        year = y;
-        stamina = this.startStamina;
-
-        //Missing Declaration: SavantDataFetcher sdf = new SavantDataFetcher();
-        //sdf.fin
-    }
+    void setStats(int id, int y);
 
     /**
-     * Changes stats/identity of a pitcher that is already instantiated.
+     * Returns the current stamina level of pitcher.
      *
-     * @param firstName
-     * @param lastName
-     * @param y
+     * @return current stamina of {@code this} pitcher
      */
-    public void setStats(String firstName, String lastName, int y) {
-        name = firstName.substring(0, 1).toUpperCase()
-                + firstName.substring(1).toLowerCase() + " "
-                + lastName.substring(0, 1).toUpperCase()
-                + lastName.substring(1).toLowerCase();
-        year = y;
-        stamina = this.startStamina;
+    int getStamina();
 
-    }
+    /**
+     * Adjusts stamina of pitcher by integer change. Positive value increases
+     * and negative value decreases. Cannot go below 0 or above START_STAMINA.
+     *
+     * @param change
+     */
+    void adjustStamina(int change);
 
+    /**
+     * Returns total number of pitches thrown by pitcher during current outing.
+     *
+     * @return the count of pitches from the current outing
+     */
+    int getPitchCount();
+
+    /**
+     * Records the outcome of a single pitch and updates this pitcher's in-game
+     * state accordingly.
+     *
+     * @param strike
+     * @param foul
+     * @param hitByPitch
+     * @param outsRecorded
+     * @param basesAdvanced
+     * @param error
+     * @param earnedRuns
+     */
+    void pitchThrown(boolean strike, boolean foul, boolean hitByPitch,
+            int outsRecorded, int basesAdvanced, boolean error, int earnedRuns);
+
+    /**
+     * Returns the value of the statistic with the given key fo rthis pitcher,
+     * or 0.0 if the statistic is not present.
+     *
+     * @param key
+     * @return value of statistic from statMap based on key
+     */
+    double getStat(String key);
+
+    /**
+     * Reports whether pitcher has a recorded value for the statistic with the
+     * given key.
+     *
+     * @param key
+     * @return whether whether pitcher has a certain stat recorded
+     */
+    boolean hasStat(String key);
+
+    /**
+     * Returns the full name of the pitcher.
+     *
+     * @return full name of pitcher.
+     */
+    String getName();
+
+    /**
+     * Returns the ID of the player in MLB's database.
+     *
+     * @return MLB ID of {@code this} pitcher
+     */
+    int getID();
+
+    /**
+     * Returns season year of the player.
+     *
+     * @return {@code int} for the season year of {@code this}
+     */
+    int getYear();
+
+    /**
+     * Returns average pitch locations for each type of pitch by a map.
+     *
+     * @return {@code map} keyed by pitch type and x or y coordinate with value
+     *         of average location on strike zone.
+     */
+    Map<String, Double> getPitchLocs();
+
+    /**
+     * Returns the pitch mix that the pitcher has.
+     *
+     * @return {@code map} keyed by pitch type and value is the percentage of
+     *         its usage frequency
+     */
+    Map<String, Double> getPitchMix();
 }
