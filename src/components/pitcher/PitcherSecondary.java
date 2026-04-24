@@ -158,14 +158,6 @@ public abstract class PitcherSecondary implements Pitcher {
     public abstract void adjustStamina(int change);
 
     @Override
-    public abstract int getPitchCount();
-
-    @Override
-    public abstract void pitchThrown(boolean strike, boolean foul,
-            boolean hitByPitch, int outsRecorded, int basesAdvanced,
-            boolean error, int earnedRuns);
-
-    @Override
     public abstract double getStat(String key);
 
     @Override

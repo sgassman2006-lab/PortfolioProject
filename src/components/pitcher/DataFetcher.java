@@ -18,12 +18,19 @@ import components.map.Map1L;
  * Fetches pitcher statistics from the MLB Stats API and Baseball Savant.
  * Combines traditional season stats with Statcast metrics into one map.
  */
-public class DataFetcher {
+public final class DataFetcher {
 
     /**
      * Mapper for statistics.
      */
-    private static final ObjectMapper MAPPER = new ObjectMapper();
+    public static final ObjectMapper MAPPER = new ObjectMapper();
+
+    /**
+     * Private constructor for utility class.
+     */
+    private DataFetcher() {
+
+    }
 
     /**
      * Fetches all stats for a pitcher and returns them as a Map<String, Double>
@@ -35,11 +42,11 @@ public class DataFetcher {
      *            Season year
      * @return Map of stat name with value
      */
-    public Map<String, Double> fetchAllStats(int playerId, int year) {
+    public static Map<String, Double> fetchAllStats(int playerId, int year) {
         Map<String, Double> stats = new Map1L<>();
 
-        this.fetchTraditionalStats(playerId, year, stats);
-        this.fetchStatcastStats(playerId, year, stats);
+        fetchTraditionalStats(playerId, year, stats);
+        fetchStatcastStats(playerId, year, stats);
 
         return stats;
     }
@@ -52,7 +59,7 @@ public class DataFetcher {
      * @param year
      * @param stats
      */
-    private void fetchTraditionalStats(int playerId, int year,
+    public static void fetchTraditionalStats(int playerId, int year,
             Map<String, Double> stats) {
         try {
             String url = "https://statsapi.mlb.com/api/v1/people/" + playerId
@@ -73,31 +80,28 @@ public class DataFetcher {
 
             JsonNode s = splits.get(0).path("stat");
 
-            this.putIfExists(stats, "era", s, "era");
-            this.putIfExists(stats, "whip", s, "whip");
-            this.putIfExists(stats, "wins", s, "wins");
-            this.putIfExists(stats, "losses", s, "losses");
-            this.putIfExists(stats, "saves", s, "saves");
-            this.putIfExists(stats, "gamesPlayed", s, "gamesPlayed");
-            this.putIfExists(stats, "gamesStarted", s, "gamesStarted");
+            putIfExists(stats, "era", s, "era");
+            putIfExists(stats, "whip", s, "whip");
+            putIfExists(stats, "wins", s, "wins");
+            putIfExists(stats, "losses", s, "losses");
+            putIfExists(stats, "saves", s, "saves");
+            putIfExists(stats, "gamesPlayed", s, "gamesPlayed");
+            putIfExists(stats, "gamesStarted", s, "gamesStarted");
             // Stores as number of innings as 132.1 instead of 132 1/3
-            this.putIfExists(stats, "inningsPitched", s, "inningsPitched");
-            this.putIfExists(stats, "strikeOuts", s, "strikeOuts");
-            this.putIfExists(stats, "baseOnBalls", s, "baseOnBalls");
-            this.putIfExists(stats, "hits", s, "hits");
-            this.putIfExists(stats, "homeRuns", s, "homeRuns");
-            this.putIfExists(stats, "earnedRuns", s, "earnedRuns");
-            this.putIfExists(stats, "strikeoutsPer9Inn", s,
-                    "strikeoutsPer9Inn");
-            this.putIfExists(stats, "walksPer9Inn", s, "walksPer9Inn");
-            this.putIfExists(stats, "hitsPer9Inn", s, "hitsPer9Inn");
-            this.putIfExists(stats, "strikeoutWalkRatio", s,
-                    "strikeoutWalkRatio");
-            this.putIfExists(stats, "groundOutsToAirouts", s,
-                    "groundOutsToAirouts");
-            this.putIfExists(stats, "battersFaced", s, "battersFaced");
-            this.putIfExists(stats, "outs", s, "outs");
-            this.putIfExists(stats, "pitchesPerInning", s, "pitchesPerInning");
+            putIfExists(stats, "inningsPitched", s, "inningsPitched");
+            putIfExists(stats, "strikeOuts", s, "strikeOuts");
+            putIfExists(stats, "baseOnBalls", s, "baseOnBalls");
+            putIfExists(stats, "hits", s, "hits");
+            putIfExists(stats, "homeRuns", s, "homeRuns");
+            putIfExists(stats, "earnedRuns", s, "earnedRuns");
+            putIfExists(stats, "strikeoutsPer9Inn", s, "strikeoutsPer9Inn");
+            putIfExists(stats, "walksPer9Inn", s, "walksPer9Inn");
+            putIfExists(stats, "hitsPer9Inn", s, "hitsPer9Inn");
+            putIfExists(stats, "strikeoutWalkRatio", s, "strikeoutWalkRatio");
+            putIfExists(stats, "groundOutsToAirouts", s, "groundOutsToAirouts");
+            putIfExists(stats, "battersFaced", s, "battersFaced");
+            putIfExists(stats, "outs", s, "outs");
+            putIfExists(stats, "pitchesPerInning", s, "pitchesPerInning");
 
         } catch (Exception e) {
             System.err.println(
@@ -113,7 +117,7 @@ public class DataFetcher {
      * @param year
      * @param stats
      */
-    private void fetchStatcastStats(int playerId, int year,
+    public static void fetchStatcastStats(int playerId, int year,
             Map<String, Double> stats) {
         try {
             String url = "https://baseballsavant.mlb.com/statcast_search/csv"
@@ -121,9 +125,10 @@ public class DataFetcher {
                     + "&game_year=" + year + "&group_by=name" + "&hfSea=" + year
                     + "%7C" + "&min_pitches=0" + "&type=details";
 
-            String csv = this.fetchRawCsv(url);
+            String csv = fetchRawCsv(url);
 
             Reader reader = new StringReader(csv);
+            @SuppressWarnings("deprecation")
             Iterable<CSVRecord> records = CSVFormat.RFC4180
                     .withFirstRecordAsHeader().withTrim().withQuote('"')
                     .withEscape('\\').withIgnoreSurroundingSpaces()
@@ -143,7 +148,7 @@ public class DataFetcher {
                 try {
                     CSVRecord record = iterator.next();
                     for (String field : statcastFields) {
-                        this.accumulateStat(totals, counts, record, field);
+                        accumulateStat(totals, counts, record, field);
                     }
                 } catch (Exception e) {
                     // skip malformed row and continue
@@ -180,7 +185,7 @@ public class DataFetcher {
      * @param node
      * @param field
      */
-    private void putIfExists(Map<String, Double> stats, String key,
+    public static void putIfExists(Map<String, Double> stats, String key,
             JsonNode node, String field) {
         JsonNode val = node.path(field);
         if (!val.isMissingNode() && !val.isNull()) {
@@ -195,12 +200,12 @@ public class DataFetcher {
     /**
      * Helper for searching for Statcast stats and putting them into map.
      *
-     * @param stats
-     * @param row
-     * @param csvKey
-     * @param statKey
+     * @param totals
+     * @param counts
+     * @param record
+     * @param field
      */
-    private void accumulateStat(java.util.Map<String, Double> totals,
+    public static void accumulateStat(java.util.Map<String, Double> totals,
             java.util.Map<String, Integer> counts, CSVRecord record,
             String field) {
         try {
@@ -223,7 +228,7 @@ public class DataFetcher {
      * @param year
      * @return Map of pitch type abbreviation to usage fraction
      */
-    public Map<String, Double> fetchPitchMix(int playerId, int year) {
+    public static Map<String, Double> fetchPitchMix(int playerId, int year) {
         Map<String, Double> mix = new Map1L<>();
         try {
             String url = "https://baseballsavant.mlb.com/statcast_search/csv"
@@ -231,8 +236,9 @@ public class DataFetcher {
                     + "&game_year=" + year + "&group_by=name_pitch_type"
                     + "&hfSea=" + year + "%7C" + "&min_pitches=0&type=details";
 
-            String csv = this.fetchRawCsv(url);
+            String csv = fetchRawCsv(url);
             Reader reader = new StringReader(csv);
+            @SuppressWarnings("deprecation")
             Iterable<CSVRecord> records = CSVFormat.RFC4180
                     .withFirstRecordAsHeader().withTrim()
                     .withIgnoreSurroundingSpaces().parse(reader);
@@ -275,7 +281,8 @@ public class DataFetcher {
      * @param year
      * @return Map of "PITCHTYPE_x" and "PITCHTYPE_z" to average location
      */
-    public Map<String, Double> fetchPitchLocations(int playerId, int year) {
+    public static Map<String, Double> fetchPitchLocations(int playerId,
+            int year) {
         Map<String, Double> locations = new Map1L<>();
         try {
             String url = "https://baseballsavant.mlb.com/statcast_search/csv"
@@ -283,8 +290,9 @@ public class DataFetcher {
                     + "&game_year=" + year + "&group_by=name_pitch_type"
                     + "&hfSea=" + year + "%7C" + "&min_pitches=0&type=details";
 
-            String csv = this.fetchRawCsv(url);
+            String csv = fetchRawCsv(url);
             Reader reader = new StringReader(csv);
+            @SuppressWarnings("deprecation")
             Iterable<CSVRecord> records = CSVFormat.RFC4180
                     .withFirstRecordAsHeader().withTrim()
                     .withIgnoreSurroundingSpaces().parse(reader);
@@ -339,7 +347,8 @@ public class DataFetcher {
      * @return raw CSV as a String
      * @throws Exception
      */
-    private String fetchRawCsv(String url) throws Exception {
+    private static String fetchRawCsv(String url) throws Exception {
+        @SuppressWarnings("deprecation")
         java.net.HttpURLConnection conn = (java.net.HttpURLConnection) new java.net.URL(
                 url).openConnection();
         conn.setRequestProperty("User-Agent", "Mozilla/5.0");

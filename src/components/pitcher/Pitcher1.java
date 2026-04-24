@@ -45,12 +45,7 @@ public class Pitcher1 extends PitcherSecondary {
     private int stamina;
 
     /**
-     * Automatic starting stamina for all new pitchers.
-     */
-    private static final int START_STAMINA = 100;
-
-    /**
-     * Constructor for a Pitcher.
+     * 4-parameter Constructor for a Pitcher.
      *
      * @param first
      * @param last
@@ -64,91 +59,104 @@ public class Pitcher1 extends PitcherSecondary {
                 + last.substring(1).toLowerCase();
         this.idNum = id;
         this.year = y;
-        this.stamina = Pitcher1.START_STAMINA;
+        this.stamina = PitcherKernel.START_STAMINA;
 
         this.setStats(id, y);
     }
 
     /**
-     * Sets stats of a pitcher in a season in a Map<String, Double>.
-     *
-     * @param id
-     * @param y
+     * Default player for the clear() method.
      */
+    private void createNewRep() {
+        this.name = "Jake Arrieta";
+        this.idNum = 453562;
+        this.year = 2015;
+        this.stamina = PitcherKernel.START_STAMINA;
+
+        this.setStats(453562, 2015);
+    }
+
     @Override
-    public void setStats(int id, int y) {
+    public final void setStats(int id, int y) {
         this.stats = DataFetcher.fetchAllStats(id, y);
         this.pitchMix = DataFetcher.fetchPitchMix(id, y);
         this.pitchLocations = DataFetcher.fetchPitchLocations(id, y);
     }
 
-    /**
-     * Returns name.
-     *
-     * @return name
-     */
     @Override
-    public String getName() {
-        return this.name;
-    }
-
-    /**
-     * Returns ID number.
-     *
-     * @return idNum
-     */
-    @Override
-    public int getID() {
-        return this.idNum;
-    }
-
-    /**
-     * Returns year.
-     *
-     * @return year
-     */
-    @Override
-    public int getYear() {
-        return this.year;
-    }
-
-    /**
-     * Returns stamina.
-     *
-     * @return stamina
-     */
-    @Override
-    public int getStamina() {
+    public final int getStamina() {
         return this.stamina;
     }
 
-    /**
-     * Returns Stats.
-     *
-     * @return stats
-     */
-    public Map<String, Double> getStats() {
-        return this.stats;
+    @Override
+    public final void adjustStamina(int change) {
+        this.stamina += change;
     }
 
-    /**
-     * Returns Pitch Mix.
-     *
-     * @return pitchMix
-     */
     @Override
-    public Map<String, Double> getPitchMix() {
+    public final double getStat(String key) {
+        return this.stats.value(key);
+    }
+
+    @Override
+    public final boolean hasStat(String key) {
+        return this.stats.hasKey(key);
+    }
+
+    @Override
+    public final String getName() {
+        return this.name;
+    }
+
+    @Override
+    public final int getID() {
+        return this.idNum;
+    }
+
+    @Override
+    public final int getYear() {
+        return this.year;
+    }
+
+    @Override
+    public final Map<String, Double> getPitchMix() {
         return this.pitchMix;
     }
 
-    /**
-     * Returns pitch locations.
-     *
-     * @return pitchLocations
-     */
     @Override
-    public Map<String, Double> getPitchLocs() {
+    public final Map<String, Double> getPitchLocs() {
         return this.pitchLocations;
+    }
+
+    @Override
+    public final Pitcher1 newInstance() {
+        try {
+            return this.getClass().getConstructor().newInstance();
+        } catch (ReflectiveOperationException e) {
+            throw new AssertionError(
+                    "Cannot construct object of type " + this.getClass());
+        }
+    }
+
+    @Override
+    public final void clear() {
+        this.createNewRep();
+    }
+
+    @Override
+    public final void transferFrom(Pitcher source) {
+        assert source != null : "Violation of: source is not null";
+        assert source != this : "Violation of: source is not this";
+        assert source instanceof Pitcher1 : "Violation of: source is"
+                + "of dynamic type Pitcher1";
+
+        Pitcher1 localSource = (Pitcher1) source;
+        this.name = source.getName();
+        this.idNum = source.getID();
+        this.year = source.getYear();
+        this.setStats(source.getID(), source.getYear());
+
+        localSource.createNewRep();
     }
 
     /**

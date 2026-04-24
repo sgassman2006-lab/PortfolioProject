@@ -6,7 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Calendar Versioning](https://calver.org/) of
 the following form: YYYY.0M.0D.
 
-# 2026.04.01
+## 2026.04.24
+
+### Changed
+
+ - PitcherSecondary Abstract Class: Tweaked Methods, added abstract method headers, removed methods
+ - Pitcher Interface: Removed some methods
+ - PitcherKernel Interface: Added and removed some methods
+ - Pitcher1 Class: Tweaked methods, added and removed others
+ - DataFetcher UtilityClass: Made all methods static
+
+## 2026.04.01
 
 ### Added
 
@@ -17,7 +27,7 @@ the following form: YYYY.0M.0D.
  - Tweaked DataFetcher Utility Class
  - Adjusted Pitcher1L Class purely for debugging purposes
 
- ### Removed
+### Removed
 
  - One method from pitcher interface
 

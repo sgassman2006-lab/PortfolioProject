@@ -48,28 +48,6 @@ public interface PitcherKernel extends Standard<Pitcher> {
     void adjustStamina(int change);
 
     /**
-     * Returns total number of pitches thrown by pitcher during current outing.
-     *
-     * @return the count of pitches from the current outing
-     */
-    int getPitchCount();
-
-    /**
-     * Records the outcome of a single pitch and updates this pitcher's in-game
-     * state accordingly.
-     *
-     * @param strike
-     * @param foul
-     * @param hitByPitch
-     * @param outsRecorded
-     * @param basesAdvanced
-     * @param error
-     * @param earnedRuns
-     */
-    void pitchThrown(boolean strike, boolean foul, boolean hitByPitch,
-            int outsRecorded, int basesAdvanced, boolean error, int earnedRuns);
-
-    /**
      * Returns the value of the statistic with the given key fo rthis pitcher,
      * or 0.0 if the statistic is not present.
      *
