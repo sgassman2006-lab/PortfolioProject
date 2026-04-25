@@ -45,14 +45,32 @@ public class Pitcher1 extends PitcherSecondary {
     private int stamina;
 
     /**
+     * Default Constructor for a Pitcher.
+     */
+    public Pitcher1() {
+        this.name = "Jake Arrieta";
+        this.idNum = 453562;
+        this.year = 2015;
+        this.stamina = PitcherKernel.START_STAMINA;
+
+        this.setStats(453562, 2015);
+    }
+
+    /**
      * 4-parameter Constructor for a Pitcher.
      *
      * @param first
      * @param last
      * @param id
      * @param y
+     * @requires the pitcher with {@code id} played in year {@code y}, and id >
+     *           0, and 2008 <= y <= {@code int of the current year}
      */
     public Pitcher1(String first, String last, int id, int y) {
+        assert (y >= 2008) : "Invalid year: " + y + "."
+                + " Must be between 2008 and the current year.";
+        assert id > 0 : "Invalid Player ID: " + id + ".";
+
         this.name = first.substring(0, 1).toUpperCase()
                 + first.substring(1).toLowerCase() + " "
                 + last.substring(0, 1).toUpperCase()
@@ -78,6 +96,12 @@ public class Pitcher1 extends PitcherSecondary {
 
     @Override
     public final void setStats(int id, int y) {
+        assert (y >= 2008) : "Invalid year: " + y + "."
+                + " Must be between 2008 and the current year.";
+        assert id > 0 : "Invalid Player ID: " + id + ".";
+
+        this.year = y;
+        this.idNum = id;
         this.stats = DataFetcher.fetchAllStats(id, y);
         this.pitchMix = DataFetcher.fetchPitchMix(id, y);
         this.pitchLocations = DataFetcher.fetchPitchLocations(id, y);
@@ -90,7 +114,13 @@ public class Pitcher1 extends PitcherSecondary {
 
     @Override
     public final void adjustStamina(int change) {
-        this.stamina += change;
+        if (change + this.stamina < 0) {
+            this.stamina = 0;
+        } else if (change + this.stamina > START_STAMINA) {
+            this.stamina = START_STAMINA;
+        } else {
+            this.stamina += change;
+        }
     }
 
     @Override
@@ -165,9 +195,9 @@ public class Pitcher1 extends PitcherSecondary {
      * @param args
      */
     public static void main(String[] args) {
-        Pitcher1 testPitcher = new Pitcher1("Shohei", "Ohtani", 660271, 2022);
-        System.out.println(testPitcher.pitchLocations.toString());
-        System.out.println(testPitcher.pitchMix.toString());
-        System.out.println(testPitcher.stats.toString());
+        Pitcher1 testPitcher = new Pitcher1("Jake", "Arrieta", 116615, 2008);
+        double[] pitchSpot = testPitcher.pitchSpot();
+        System.out.println("x: " + pitchSpot[0]);
+        System.out.println("z: " + pitchSpot[1]);
     }
 }
