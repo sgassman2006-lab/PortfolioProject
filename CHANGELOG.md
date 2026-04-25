@@ -6,6 +6,45 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Calendar Versioning](https://calver.org/) of
 the following form: YYYY.0M.0D.
 
+## 2026.04.24
+
+### Changed
+
+ - PitcherSecondary Abstract Class: Tweaked Methods, added abstract method headers, removed methods
+ - Pitcher Interface: Removed some methods
+ - PitcherKernel Interface: Added and removed some methods
+ - Pitcher1 Class: Tweaked methods, added and removed others
+ - DataFetcher UtilityClass: Made all methods static
+
+## 2026.04.01
+
+### Added
+
+ - Pitcher Secondary Class, includes: 9 methods
+
+### Changed
+
+ - Tweaked DataFetcher Utility Class
+ - Adjusted Pitcher1L Class purely for debugging purposes
+
+### Removed
+
+ - One method from pitcher interface
+
+## 2026.03.16
+
+### Added
+
+- Designed two interfaces for Pitcher Component: PitcherKernel, and Pitcher
+
+## 2026.03.11
+
+### Added
+
+- Designed a proof-of-concept for Pitcher component
+- Created a Pitcher1L class file with instance variables, a constructor, and a setStats method
+- Created a DataFetcher Util class that is used in Pitcher1L to extract stats from Statcast and MLB API
+
 ## 2026.02.05
 
 ### Added
@@ -13,3 +52,4 @@ the following form: YYYY.0M.0D.
 - Designed a Pitcher Simulator component
 - Designed a Long Distance Countdown component
 - Designed a Workout Log component
+
