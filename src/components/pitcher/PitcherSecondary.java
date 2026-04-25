@@ -18,12 +18,12 @@ public abstract class PitcherSecondary implements Pitcher {
     public final String decidePitchType() {
         double roll = Math.random();
         double cumulative = 0.0;
-        String key = "FF";
+        String key = "";
 
         Map<String, Double> pitchMix = this.getPitchMix();
         for (Map.Pair<String, Double> entry : pitchMix) {
             cumulative += entry.value();
-            if (roll < cumulative) {
+            if (key.equals("") && roll < cumulative) {
                 key = entry.key();
             }
         }
@@ -41,24 +41,33 @@ public abstract class PitcherSecondary implements Pitcher {
         Map<String, Double> pitchLocs = this.getPitchLocs();
         if (pitchLocs.hasKey(pitchType + "_x")) {
             avgX = pitchLocs.value(pitchType + "_x");
-            avgX = avgX / 0.835; //Updates to 2 by 2
+            avgX = avgX / 0.7085; //Updates to [-1, 1] x-coord on plate range
         }
+        System.out.println("avgX = " + avgX);
 
         if (pitchLocs.hasKey(pitchType + "_z")) {
             avgZ = pitchLocs.value(pitchType + "_z");
-            avgZ = avgZ - 2.5; //Updates to 2 by 2
+            avgZ = avgZ - 2.5; //Updates to [-1, 1] z-coord on plate range
         }
+        System.out.println("avgZ = " + avgZ);
 
         // To make inconsistent
-        double variance = 0.15;
+        double variance = 0.7;
+        if (avgX > -0.3 && avgX < 0.3) {
+            variance = 1.0;
+        }
         double x = avgX + (Math.random() * 2 - 1) * variance;
+        if (avgZ > -0.3 && avgZ < 0.3) {
+            variance = 1.1;
+        }
         double z = avgZ + (Math.random() * 2 - 1) * variance;
 
         // Restricts to [-1.5, 1.5]
         x = Math.max(-1.5, Math.min(1.5, x));
         z = Math.max(-1.5, Math.min(1.5, z));
 
-        return new double[] { x, z };
+        double[] spot = { x, z };
+        return spot;
     }
 
     @Override
@@ -72,7 +81,7 @@ public abstract class PitcherSecondary implements Pitcher {
             percentCo -= (staminaLoss * veloDropFactor);
         } else {
             double veloDropFactor = 0.005;
-            percentCo -= (staminaLoss * veloDropFactor) + 0.35;
+            percentCo = percentCo - (staminaLoss * veloDropFactor) + 0.35;
         }
 
         return percentCo;
@@ -86,7 +95,11 @@ public abstract class PitcherSecondary implements Pitcher {
 
         double whip = 0.0;
         if (inningsPitched != 0.0) {
+            double extraOuts = (inningsPitched % 1.0) * 10;
+            inningsPitched += (extraOuts / 3);
             whip = (walks + hits) / inningsPitched;
+            double rem = whip % 0.01;
+            whip -= rem;
         }
 
         return whip;

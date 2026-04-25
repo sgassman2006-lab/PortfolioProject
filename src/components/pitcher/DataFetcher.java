@@ -23,7 +23,7 @@ public final class DataFetcher {
     /**
      * Mapper for statistics.
      */
-    public static final ObjectMapper MAPPER = new ObjectMapper();
+    private static final ObjectMapper MAPPER = new ObjectMapper();
 
     /**
      * Private constructor for utility class.

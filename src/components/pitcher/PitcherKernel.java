@@ -29,6 +29,8 @@ public interface PitcherKernel extends Standard<Pitcher> {
      * @param y
      *
      * @replaces this.stats
+     * @requires the pitcher with {@code id} played in year {@code y}, and 2008
+     *           <= y <= {@code int of the current year}
      */
     void setStats(int id, int y);
 
@@ -87,7 +89,15 @@ public interface PitcherKernel extends Standard<Pitcher> {
     int getYear();
 
     /**
-     * Returns average pitch locations for each type of pitch by a map.
+     * Returns average pitch locations for each type of pitch by a map, with
+     * possible keys being: "FF" = four-seam fastball; "CS" = slow curveball;
+     * "ST" = sweeper; "FS" = split-finger; "CU" = curveball; "FC" = cutter;
+     * "SI" = sinker; "SL" = slider; "CH" = changeup; "KC" = knuckle-curve; "SV"
+     * = slurve; "EP" = eephus; "FO" = forkball; "KN" = knuckleball; "SC" =
+     * screwball; "IN" = intentional ball; "FT" = two-seam fastball; "GY" =
+     * gyroball; "PO" = pitch-out; "UN" = unknown/unidentifiableall with an
+     * addition of -"_x" or -"_z" being the coordinate of its location on the
+     * plate.
      *
      * @return {@code map} keyed by pitch type and x or y coordinate with value
      *         of average location on strike zone.
@@ -95,7 +105,13 @@ public interface PitcherKernel extends Standard<Pitcher> {
     Map<String, Double> getPitchLocs();
 
     /**
-     * Returns the pitch mix that the pitcher has.
+     * Returns the pitch mix that the pitcher has, with possible keys being:
+     * "FF" = four-seam fastball; "CS" = slow curveball; "ST" = sweeper; "FS" =
+     * splitter; "CU" = curveball; "FC" = cutter; "SI" = sinker; "SL" = slider;
+     * "CH" = changeup; "KC" = knuckle-curve; "SV" = slurve; "EP" = eephus; "FO"
+     * = forkball; "KN" = knuckleball; "SC" = screwball; "IN" = intentional
+     * ball; "FT" = two-seam fastball; "GY" = gyroball; "PO" = pitch-out; "UN" =
+     * unknown/unidentifiable.
      *
      * @return {@code map} keyed by pitch type and value is the percentage of
      *         its usage frequency
